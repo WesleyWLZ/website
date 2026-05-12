@@ -11,15 +11,48 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ia-writer-mono-latin-400-italic */
+@font-face {
+  font-family: 'iA Writer Mono';
+  font-style: normal;
+  font-display: auto;
+  font-weight: 400;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/ia-writer-mono@latest/latin-400-normal.woff2) format('woff2');
+}
+
+.logo-container {
+    padding: 15px 0; /* Espaçamento para o logo respirar */
+      display: flex;
+    align-items: center;
+}
+
+.main-logo {
+    height: 40px;    /* Ajuste a altura conforme o seu design no Figma */
+    width: auto;     /* Mantém a proporção da imagem */
+    display: block;
+    object-fit: contain;
+}
+
+/* ia-writer-mono-latin-700-italic */
+@font-face {
+  font-family: 'iA Writer Mono';
+  font-style: normal;
+  font-display: auto;
+  font-weight: 700;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/ia-writer-mono@latest/latin-700-normal.woff2) format('woff2');
+}
+
   :root {
+    --font-text: 'iA Writer Mono', monospace;
+    --wiki-blue: #cedff2;
     --black: #000;
     --white: #fff;
     --gray: #f5f5f0;
-    --border: #c8c8c0;
+    --border: #a2a9b1;
     --link: #0645ad;
     --link-visited: #0b0080;
     --accent-yellow: #f0e04a;
-    --font-serif: 'IM Fell English', Georgia, serif;
+    --font-serif: 'Georgia', IM Fell English, serif;
     --font-mono: 'IBM Plex Mono', monospace;
     --font-sans: 'IBM Plex Sans', sans-serif;
     --sidebar-w: 160px;
@@ -27,17 +60,31 @@
   }
 
   html { font-size: 15px; }
-  body { background: var(--white); color: var(--black); font-family: var(--font-mono); line-height: 1.6; }
+  body { background: #f6f6f6; color: var(--black); font-family: var(--font-mono); line-height: 1.6; margin: 0px; padding: 0px; }
 
   a { color: var(--link); text-decoration: underline; cursor: pointer; }
   a:visited { color: var(--link-visited); }
   a:hover { text-decoration: none; }
 
+/*--container*/
+  .container {
+    max-width: 1280px; /* Largura máxima do conteúdo igual ao design */
+    margin: 0 auto;    /* O segredo da Wikipedia: margem automática nas laterais centraliza o bloco */
+    padding: 0 40px;   /* Um respiro de segurança para o conteúdo não colar em telas menores */
+    background-color: #ffffff; /* O fundo do conteúdo é branco */
+}
+
+.article-header-container {
+    border-bottom: 1px solid #a2a9b1; /* Cor padrão de linha da Wikipedia */
+    width: 100%;
+    margin-bottom: 8px;
+    display: flex; /* Garante que a linha preta alinhe por baixo */
+}
+
   /* ── NAVBAR ── */
   #navbar {
     position: sticky; top: 0; z-index: 100;
     background: var(--white);
-    border-bottom: 1px solid var(--border);
     height: var(--navbar-h);
     display: flex; align-items: center;
     padding: 0 20px;
@@ -49,10 +96,10 @@
     text-decoration: none; color: var(--black);
   }
   #navbar .logo-sq { width: 16px; height: 16px; background: #ff0000; flex-shrink: 0; }
-  #navbar .nav-actions { display: flex; align-items: center; gap: 20px; font-size: 0.82rem; }
-  #navbar .nav-actions a { font-family: var(--font-sans); font-size: 0.82rem; }
+  #navbar .nav-actions { display: flex; align-items: center; gap: 20px; font-size: 0.9rem; }
+  #navbar .nav-actions a { font-family: var(--font-sans); font-size: 0.9rem; }
   #navbar .cart-btn {
-    font-family: var(--font-sans); font-size: 0.82rem;
+    font-family: var(--font-sans); font-size: 0.9rem;
     background: none; border: none; cursor: pointer; color: var(--link); text-decoration: underline;
   }
   #hamburger {
@@ -67,9 +114,8 @@
   /* ── SIDEBAR ── */
   #sidebar {
     width: var(--sidebar-w); flex-shrink: 0;
-    border-right: 1px solid var(--border);
     padding: 16px 12px;
-    font-size: 0.82rem;
+    font-size: 1rem;
     position: sticky; top: var(--navbar-h);
     height: calc(100vh - var(--navbar-h));
     overflow-y: auto;
@@ -79,8 +125,6 @@
   #sidebar .nav-link { color: var(--link); text-decoration: none; display: block; padding: 1px 0; }
   #sidebar .nav-link:hover { text-decoration: underline; }
   #sidebar .sub-items { padding-left: 12px; margin-top: 2px; }
-  #sidebar .sub-items li::before { content: "· "; }
-  #sidebar .section-gap { margin-top: 10px; }
   .accordion-toggle { cursor: pointer; user-select: none; }
   .accordion-toggle::before { content: "▾ "; font-size: 0.7rem; }
   #sidebar .divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
@@ -91,38 +135,50 @@
   /* ── COLLECTION HEADER ── */
   .collection-header {
     display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 1px solid var(--border);
     margin-bottom: 4px;
     padding-bottom: 4px;
   }
-  .collection-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 400; line-height: 1.2; }
+  .collection-title { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; line-height: 1.2; }
   .translate-icon { font-size: 1rem; color: #555; cursor: pointer; flex-shrink: 0; margin-top: 6px; }
-  .article-tag { font-family: var(--font-mono); font-size: 1rem; color: #555; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  .article-tag { font-family: var(--font-mono); font-size: 0.9rem; color: #555; border-bottom: 2px solid #000; padding-bottom: 6px; display: inline-block; padding: 8px 0; }
 
   /* ── PRODUCT HEADER (text + featured) ── */
   .product-header {
+    font-family: var(--font-text);
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 20px;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+    box-sizing: border-box;
     margin-bottom: 24px;
   }
-  .collection-body { font-size: 0.85rem; line-height: 1.7; }
+  .collection-body { font-size: 1rem; line-height: 1.7; }
   .collection-body p + p { margin-top: 10px; }
 
   /* ── FEATURED CARD ── */
   .featured-card {
     border: 1px solid var(--border);
-    font-size: 0.78rem;
+    background-color: #f8f9fa;
+    width: 280px;
+    float: right;
+    margin-left: 20px;
+    flex-shrink: 0;
+    padding: 4px;
+    font-size: 0.8rem;
     font-family: var(--font-sans);
     flex-shrink: 0;
     align-self: start;
   }
   .featured-card .fc-label {
-    background: var(--accent-yellow);
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    font-weight: 500;
+    background: var(--wiki-blue);
+    padding: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
     border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
   }
   .featured-card .fc-img {
     width: 100%; aspect-ratio: 1;
@@ -136,8 +192,8 @@
     border-bottom: 1px solid var(--border);
   }
   .featured-card table { width: 100%; border-collapse: collapse; }
-  .featured-card td { padding: 3px 8px; border-top: 1px solid var(--border); }
-  .featured-card td:first-child { color: #555; width: 68px; }
+  .featured-card td { padding: 4px 6px; border-top: 1px solid var(--border); vertical-align: top; border-top: 1px solid #f0f0f0; }
+  .featured-card td:first-child { font-weight:bold; color: #000; width: 35%; }
   .stars { color: #e8a000; letter-spacing: -1px; }
 
   /* ── SECTION DIVIDER ── */
@@ -165,7 +221,6 @@
   }
   .product-card:hover { background: #fafaf8; }
   .product-card .pc-img-wrap {
-    background: repeating-conic-gradient(#ddd 0% 25%, #f0f0f0 0% 50%) 0 0 / 12px 12px;
     aspect-ratio: 1;
     overflow: hidden;
     border-bottom: 1px solid var(--border);
@@ -175,9 +230,9 @@
     mix-blend-mode: multiply;
   }
   .product-card .pc-info { padding: 10px 10px 12px; flex: 1; }
-  .product-card .pc-name { font-family: var(--font-sans); font-size: 0.82rem; font-weight: 400; margin-bottom: 2px; }
-  .product-card .pc-price { font-family: var(--font-mono); font-size: 0.8rem; color: var(--link); margin-bottom: 4px; }
-  .product-card .pc-sizes { font-size: 0.72rem; color: #666; }
+  .product-card .pc-name { font-family: var(--font-mono); font-size: 1rem; font-weight: 400; margin-bottom: 2px; }
+  .product-card .pc-price { font-family: var(--font-mono); font-size: 1rem; margin-bottom: 4px; }
+  .product-card .pc-sizes { font-size: 0.9rem; color: #666; }
   .pc-size-tag {
     display: inline-block; border: 1px solid var(--border);
     padding: 0px 5px; font-size: 0.68rem; margin-right: 2px;
@@ -264,16 +319,19 @@
 </style>
 </head>
 <body>
+  <div class="container">
+  
 
 <!-- ── NAVBAR ── -->
 <nav id="navbar">
   <button id="hamburger" aria-label="Menu" onclick="toggleSidebar()">
     <span></span><span></span><span></span>
   </button>
-  <a href="#" class="logo">
-    <span class="logo-sq"></span>
-    #FF00
-  </a>
+      <div class="logo-container">
+      <a href="/">
+        <img src="assets/logo.png" alt="Logo #FF00" class="main-logo">
+      </a>
+      </div>
   <div class="nav-actions">
     <a href="#" class="hide-mobile">Create account</a>
     <a href="#" class="hide-mobile">Log in</a>
@@ -300,7 +358,6 @@
           <li><a href="#" class="nav-link">Jaqueta</a></li>
         </ul>
       </li>
-      <hr class="divider">
       <li><a href="#" class="nav-link">Contact</a></li>
       <li><a href="#" class="nav-link">About us</a></li>
       <li><a href="#" class="nav-link">FAQ</a></li>
@@ -315,20 +372,23 @@
       <h1 class="collection-title" id="collection-title">If i was right collection.</h1>
       <span class="translate-icon" title="Translate">🌐</span>
     </div>
-    <div class="article-tag">Article</div>
-
+    <div class="article-header-container">
+      
+    <div class="article-tag" class="article-header-container">Article</div>
+    </div>
     <!-- Product Header: text + featured -->
     <div class="product-header" id="product-header-section">
       <div class="collection-body" id="collection-body">
         <p><b>A Camiseta PIET Nation 2.0</b> é confeccionada em malha <a href="#">100% algodão de 260 GSM</a>. Com <a href="#">modelagem relaxed</a>, a peça apresenta mangas curtas e gola estruturada. Possui estampa frontal e traseira, reinterpretando um clássico da marca com proporções atualizadas e acabamento desgastado.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec convallis augue, eu eleifend odio. Quisque pharetra sem at elit rhoncus, at bibendum elit scelerisque. Sed et nibh nulla. Sed eget tristique dolor, vitae hendrerit lectus. Etiam auctor sapien nisi, id sollicitudin ipsum facilisis eu. Nulla ut justo venenatis, egestas libero non, faucibus ipsum.</p>
       </div>
+      
 
       <!-- Featured Card -->
       <div class="featured-card" id="featured-card">
         <div class="fc-label" id="fc-label">The Perfect Jacket</div>
         <div class="fc-img-placeholder" id="fc-img-wrap">
-          <!-- swap with: <img src="..." class="fc-img"> -->
+         <img src="assets/jacket.webp" class="fc-img" alt="Feature Image">
         </div>
         <table>
           <tr><td>Reviews</td><td><span class="stars">★★★★★</span> <span style="font-size:0.7rem;color:#555">5 Reviews</span></td></tr>
@@ -388,15 +448,15 @@
 //  Campos: id, name, price (em centavos), sizes[], image (URL ou '')
 // ════════════════════════════════════════════════════
 const PRODUCTS = [
-  { id: 1, name: 'Perfect Jacket', price: 75000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 2, name: 'Cap',            price: 15000, sizes: ['U'],              image: '' },
-  { id: 3, name: 'Hoodie',         price: 48000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 4, name: 'Jeans',          price: 48000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 5, name: 'Beanie',         price: 12000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 6, name: 'Tee',            price: 15000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 7, name: 'Sweatshirt',     price: 38000, sizes: ['S','M','L'],      image: '' },
-  { id: 8, name: 'Shorts',         price: 22000, sizes: ['S','M','L','XL'], image: '' },
-  { id: 9, name: 'Parka',          price: 92000, sizes: ['S','M','L'],      image: '' },
+  { id: 1, name: 'Perfect Jacket', price: 75000, sizes: ['S','M','L','XL'], image: 'assets/jacket.webp' },
+  { id: 2, name: 'Cap',            price: 15000, sizes: ['U'],              image: 'assets/cap.jpg' },
+  { id: 3, name: 'Hoodie',         price: 48000, sizes: ['S','M','L','XL'], image: 'assets/hoodie.jpg' },
+  { id: 4, name: 'Jeans',          price: 48000, sizes: ['S','M','L','XL'], image: 'assets/jeans.webp' },
+  { id: 5, name: 'Beanie',         price: 12000, sizes: ['S','M','L','XL'], image: 'assets/beanie.webp' },
+  { id: 6, name: 'Tee',            price: 15000, sizes: ['S','M','L','XL'], image: 'assets/tee.jpg' },
+  { id: 7, name: 'Knit',     price: 38000, sizes: ['S','M','L'],      image: 'assets/knit.webp' },
+  { id: 8, name: 'Shorts',         price: 22000, sizes: ['S','M','L','XL'], image: 'assets/shorts.webp' },
+  { id: 9, name: 'Corta Vento',          price: 92000, sizes: ['S','M','L'],      image: 'assets/corta.webp' },
 ];
 
 // ════════════════════════════════════════════════════
@@ -466,7 +526,7 @@ function renderProducts() {
         </div>
         <div style="margin-top:8px">
           <button onclick="addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')})"
-            style="background:none;border:1px solid #000;padding:4px 10px;font-size:0.72rem;cursor:pointer;font-family:var(--font-mono);width:100%">
+            style="background:none;border:1px solid #000;padding:4px 10px;font-size:0.85rem;cursor:pointer;font-family:var(--font-mono);width:100%">
             + Add to cart
           </button>
         </div>
@@ -511,5 +571,6 @@ function showToast(msg) {
 // ── INIT ──
 renderProducts();
 </script>
+</div>
 </body>
 </html>
