@@ -481,6 +481,8 @@ function removeFromCart(id) {
   updateCartUI();
 }
 
+
+
 function updateCartUI() {
   const count = cart.reduce((a, i) => a + i.qty, 0);
   const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
